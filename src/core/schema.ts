@@ -287,7 +287,7 @@ export function defaultSceneSettings(): SceneSettings {
 }
 
 export function normalizeSceneSettings(input: unknown = {}): SceneSettings {
-  const source = (input ?? {}) as Record<string, unknown>;
+  const source = (input || {}) as Record<string, unknown>;
   const result = defaultSceneSettings();
   if (["gradient", "color", "texture"].includes(source.skyMode as string)) {
     result.skyMode = source.skyMode as SceneSettings["skyMode"];
