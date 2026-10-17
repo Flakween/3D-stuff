@@ -1,0 +1,87 @@
+name: Deploy
+
+# Deploying is deliberately manual: the workflow uploads a new revision to
+# Websim without promoting it, so the build can be tested at its own URL
+# first. Promotion is a second, explicitly gated run.
+on:
+  workflow_dispatch:
+    inputs:
+      project_id:
+        description: "Websim project id to deploy to"
+        required: true
+        type: string
+      promote:
+        description: "Promote the newest revision to live"
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: deploy-${{ inputs.project_id }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 7
+
+  deploy:
+    name: Upload to Websim
+    needs: build
+    runs-on: ubuntu-latest
+    # The environment can be protected with required reviewers, which turns
+    # this job into a manual gate.
+    environment: production
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Install the Websim CLI
+        run: npm install --global websim-cli@0.2.1
+
+      - name: Write the Websim token
+        env:
+          WEBSIM_AUTH_TOKEN: ${{ secrets.WEBSIM_AUTH_TOKEN }}
+        run: |
+          if [ -z "$WEBSIM_AUTH_TOKEN" ]; then
+            echo "::error::The WEBSIM_AUTH_TOKEN secret is not set."
+            exit 1
+          fi
+          mkdir -p "$HOME"
+          printf '{"authToken": "%s"}' "$WEBSIM_AUTH_TOKEN" > "$HOME/.websim-cli.json"
+
+      - name: Upload a new revision without promoting it
+        working-directory: dist
+        run: websim-cli sync "${{ inputs.project_id }}" --no-promote
+
+      - name: Promote the newest revision
+        if: ${{ inputs.promote }}
+        working-directory: dist
+        env:
+          PROJECT_ID: ${{ inputs.project_id }}
+        run: |
+          version=$(websim-cli revisions "$PROJECT_ID" --json | jq -r '(.revisions // .)[0].version')
+          if [ -z "$version" ] || [ "$version" = "null" ]; then
+            echo "::error::Could not work out which revision to promote."
+            exit 1
+          fi
+          echo "Promoting revision $version"
+          websim-cli promote "$PROJECT_ID" "$version"

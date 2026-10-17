@@ -1,0 +1,15 @@
+# Build output and dependencies
+node_modules/
+*.tsbuildinfo
+
+# Websim keeps the project id and a file manifest in the build folder
+.websim.json
+.websim-manifest.json
+
+# Editor and OS noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
+npm-debug.log*

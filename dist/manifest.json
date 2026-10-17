@@ -1,0 +1,19 @@
+{
+  "name": "dango-cat-3d",
+  "version": "0.1.0",
+  "three": "0.180.0",
+  "files": [
+    {
+      "path": "dango3d.js",
+      "bytes": 806140
+    },
+    {
+      "path": "styles/dango3d.css",
+      "bytes": 32053
+    },
+    {
+      "path": "styles/turbowarp.css",
+      "bytes": 4752
+    }
+  ]
+}

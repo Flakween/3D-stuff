@@ -1,0 +1,208 @@
+/* TurboWarp's compiled editor styles are included by its official JavaScript bundle. */
+
+html.tw-mobile, html.tw-mobile body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: #d9e3f2;
+}
+
+html.tw-mobile #app {
+  position: relative;
+  transform-origin: top left;
+  touch-action: manipulation;
+}
+
+/* Give portrait screens one pane above the other instead of shrinking the
+   complete desktop editor to a few pixels per control. */
+html.tw-mobile-portrait [class*="gui_body-wrapper_"] {
+  min-height: 0;
+}
+
+html.tw-mobile-portrait [class*="gui_flex-wrapper_"] {
+  flex-direction: column;
+}
+
+html.tw-mobile-portrait [class*="gui_editor-wrapper_"] {
+  flex: 1 1 55%;
+  width: 100%;
+  min-height: 350px;
+}
+
+html.tw-mobile-portrait [class*="gui_stage-and-target-wrapper_"] {
+  flex: 1 1 45%;
+  width: 100%;
+  min-height: 420px;
+}
+
+html.tw-mobile-portrait [class*="gui_tabs_"],
+html.tw-mobile-portrait [class*="gui_tab-panel_"] {
+  min-height: 0;
+}
+
+html.tw-toolbar-collapsed [class*="gui_menu-bar-position_"] {
+  display: none !important;
+}
+
+#app .tw-toolbar-toggle {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  min-height: 2rem;
+  padding: 0.25rem 0.55rem;
+  border: 1px solid currentColor;
+  border-radius: 0.4rem;
+  background: transparent;
+  font: 700 0.75rem/1 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+#app .tw-hide-toolbar,
+#app .tw-hide-toolbar * {
+  color: #fff !important;
+}
+
+#app .tw-show-toolbar,
+#app .tw-show-toolbar * {
+  color: #c34b00 !important;
+}
+
+#app .tw-toolbar-toggle:hover {
+  background: #ffffff24;
+}
+
+#app .tw-toolbar-toggle:focus-visible {
+  outline: 2px solid #343434;
+  outline-offset: 2px;
+}
+
+#app .tw-show-toolbar {
+  display: none;
+  height: 1.9rem;
+  margin: 0 0.4rem 0 0.3rem;
+}
+
+html.tw-toolbar-collapsed #app .tw-show-toolbar {
+  display: inline-flex;
+}
+
+#app .sa-find-bar {
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+}
+
+#app .sa-find-wrapper {
+  min-width: 0;
+}
+
+html.tw-mobile-portrait #app [class*="gui_tab-list_"] {
+  width: 100%;
+}
+
+/* Orange 2K branding for the editor toolbar. */
+[class*="menu-bar_menu-bar_"] {
+  background-color: #ff7900 !important;
+  background-image: none !important;
+  color: #fff !important;
+}
+
+[class*="menu-bar_scratch-logo_"] {
+  width: 1.6rem !important;
+  height: 1.6rem !important;
+  object-fit: cover;
+  border-radius: 0.25rem;
+}
+
+/* Keep the sprite/object tiles in the same orange theme. */
+[class*="sprite-selector-item_sprite-selector-item_"] {
+  background: #ff7900 !important;
+  border-color: #ff7900 !important;
+}
+
+[class*="sprite-selector-item_sprite-info_"] {
+  background: #ff7900 !important;
+  color: #c34b00 !important;
+}
+
+[class*="sprite-selector-item_is-selected_"] {
+  border-color: #ffb15c !important;
+}
+
+/* Orange toolbox tabs for lists and broadcast messages. */
+[class*="scratchCategoryId-lists"],
+[class*="scratchCategoryId-events"] {
+  background-color: #ff7900 !important;
+}
+
+/* The create-list and create-message controls are Blockly flyout buttons. */
+.blocklyFlyoutButton > rect {
+  fill: #ff7900 !important;
+}
+
+.blocklyFlyoutButton .blocklyText {
+  fill: #fff !important;
+}
+
+/* Apply the requested orange text color across the editor UI. */
+#app * {
+  color: #c34b00 !important;
+}
+
+#app svg text {
+  fill: #c34b00 !important;
+}
+
+#app .blocklySvg text,
+#app .blocklyText {
+  fill: #fff !important;
+}
+
+/* Stage size shortcuts in Advanced Settings. */
+.tw-stage-size-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 12px 0 4px;
+}
+
+button.tw-stage-size-preset {
+  display: flex;
+  flex: 1 1 110px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 96px;
+  padding: 10px 8px;
+  border: 1px solid #555 !important;
+  border-radius: 8px;
+  background: #272727 !important;
+  color: #fff !important;
+  cursor: pointer;
+}
+
+button.tw-stage-size-preset strong,
+button.tw-stage-size-preset small,
+#app button.tw-stage-size-preset,
+#app button.tw-stage-size-preset strong,
+#app button.tw-stage-size-preset small { color: #fff !important; }
+button.tw-stage-size-preset small { opacity: .7; font-size: 11px; }
+button.tw-stage-size-preset:hover { border-color: #ff7900 !important; background: #3b2b20 !important; }
+button.tw-stage-size-preset[aria-pressed="true"] { border-color: #ff7900 !important; background: #4b2c16 !important; box-shadow: 0 0 0 2px #ff790044; }
+button.tw-stage-size-preset:focus-visible { outline: 2px solid #ff7900; outline-offset: 2px; }
+
+.tw-stage-size-preview {
+  display: block;
+  flex: none;
+  width: auto;
+  height: 34px;
+  border: 2px solid #ff9b3d;
+  border-radius: 3px;
+  background: #ff790044;
+}
