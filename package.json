@@ -1,0 +1,31 @@
+{
+  "name": "dango-cat-3d",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A TurboWarp fork reworked into a fully featured 3D block-based engine powered by three.js.",
+  "license": "GPL-3.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "build:watch": "node tools/build.mjs --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test \"tests/*.test.*\"",
+    "lint": "eslint src tools tests",
+    "verify": "npm run lint && npm run typecheck && npm test && npm run build",
+    "serve": "node tools/serve.mjs",
+    "start": "npm run build && npm run serve",
+    "fork:patch": "node tools/fork-patches.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "esbuild": "0.25.10",
+    "eslint": "9.39.5",
+    "globals": "16.5.0",
+    "jsdom": "26.1.0",
+    "three": "0.180.0",
+    "typescript": "5.9.3"
+  }
+}
