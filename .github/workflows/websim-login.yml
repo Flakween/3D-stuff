@@ -1,0 +1,54 @@
+name: Websim device login
+
+# Runs the Websim CLI device-login handshake from a runner (which has open egress)
+# and seals the resulting auth token with an RSA public key supplied by the caller.
+#
+# The token is never written to the log in plaintext — only the sealed envelope
+# is, and only the holder of the matching private key can open it.
+
+on:
+  workflow_dispatch:
+    inputs:
+      public_key:
+        description: 'RSA public key (PEM, SPKI) used to seal the auth token'
+        required: true
+        default: ''
+      timeout_minutes:
+        description: 'How long to wait for browser confirmation'
+        required: false
+        default: '45'
+
+permissions:
+  contents: read
+
+jobs:
+  login:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Write public key
+        env:
+          PUBLIC_KEY: ${{ inputs.public_key }}
+        run: |
+          printf '%s\n' "$PUBLIC_KEY" > public.pem
+          openssl pkey -pubin -in public.pem -noout -text >/dev/null
+
+      - name: Run Websim login handshake
+        env:
+          TIMEOUT_MINUTES: ${{ inputs.timeout_minutes }}
+        run: |
+          node .github/scripts/websim-login.mjs \
+            --public-key public.pem \
+            --timeout-minutes "$TIMEOUT_MINUTES"
+
+      - name: Cleanup
+        if: always()
+        run: rm -f public.pem

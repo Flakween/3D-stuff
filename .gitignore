@@ -1,0 +1,26 @@
+# Local / CI secrets — never commit
+.websim.json
+.websim-manifest.json
+.websim-cli.json
+
+# Login bridge
+public.pem
+*.sealed
+
+# Build output (built in CI, not committed)
+dist/
+build/
+coverage/
+.playwright/
+.eslintcache
+
+# Dependencies
+node_modules/
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/*
+!.vscode/settings.json
